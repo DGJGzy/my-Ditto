@@ -13,7 +13,7 @@ def local(ctx):
     ''' Run benchmarks on localhost '''
     bench_params = {
         'nodes': 4,
-        'rate': 1000,
+        'rate': 40000,
         'tx_size': 512,
         'faults': 0,
         'duration': 10,
@@ -25,7 +25,7 @@ def local(ctx):
             'max_payload_size': 500,
             'min_block_delay': 0,
             'network_delay': 2000, # message delay on the leaders' proposals during DDoS
-            'ddos': True, # True for DDoS attack on the leader, False otherwise
+            'ddos': False, # True for DDoS attack on the leader, False otherwise
             'exp': 1 # multiplicative factor for exponential fallback
         },
         'mempool': {
@@ -44,7 +44,7 @@ def local(ctx):
 
 
 @task
-def create(ctx, nodes=2):
+def create(ctx, nodes=1):
     ''' Create a testbed'''
     try:
         InstanceManager.make().create_instances(nodes)
@@ -101,12 +101,12 @@ def install(ctx):
 def remote(ctx):
     ''' Run benchmarks on AWS '''
     bench_params = {
-        'nodes': [50],
-        'rate': [35_000, 40_000],
-        'tx_size': 512,
+        'nodes': [4],
+        'rate': [50000, 60000],
+        'tx_size': 256,
         'faults': 0, 
-        'duration': 300,
-        'runs': 2,
+        'duration': 60,
+        'runs': 1,
     }
     node_params = {
         'consensus': {
@@ -115,13 +115,13 @@ def remote(ctx):
             'max_payload_size': 1_000,
             'min_block_delay': 100,
             'network_delay': 20_000, # message delay on the leaders' proposals during DDoS
-            'ddos': True, # True for DDoS attack on the leader, False otherwise
+            'ddos': False, # True for DDoS attack on the leader, False otherwise
             'exp': 5 # multiplicative factor for exponential fallback
         },
         'mempool': {
             'queue_capacity': 100_000,
             'sync_retry_delay': 100_000,
-            'max_payload_size': 500_000,
+            'max_payload_size': 256_000,
             'min_block_delay': 100
         },
         'protocol': 1, # 0 for 2-chain HotStuff, 1 for Ditto, 2 for 2-chain VABA
