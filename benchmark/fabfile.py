@@ -12,9 +12,9 @@ from aws.remote import Bench, BenchError
 def local(ctx):
     ''' Run benchmarks on localhost '''
     bench_params = {
-        'nodes': 4,
-        'rate': 40000,
-        'tx_size': 512,
+        'nodes': 7,
+        'rate': 100000,
+        'tx_size': 256,
         'faults': 0,
         'duration': 10,
     }
@@ -26,12 +26,14 @@ def local(ctx):
             'min_block_delay': 0,
             'network_delay': 2000, # message delay on the leaders' proposals during DDoS
             'ddos': False, # True for DDoS attack on the leader, False otherwise
-            'exp': 1 # multiplicative factor for exponential fallback
+            'exp': 1, # multiplicative factor for exponential fallback
+            'unstable_ddos': True,
+            'unstable_delay': 50,
         },
         'mempool': {
             'queue_capacity': 10_000,
             'sync_retry_delay': 100_000,
-            'max_payload_size': 15_000,
+            'max_payload_size': 256_000,
             'min_block_delay': 0
         },
         'protocol': 1, # 0 for 2-chain HotStuff, 1 for Ditto, 2 for 2-chain VABA
@@ -44,7 +46,7 @@ def local(ctx):
 
 
 @task
-def create(ctx, nodes=1):
+def create(ctx, nodes=4):
     ''' Create a testbed'''
     try:
         InstanceManager.make().create_instances(nodes)
@@ -101,28 +103,30 @@ def install(ctx):
 def remote(ctx):
     ''' Run benchmarks on AWS '''
     bench_params = {
-        'nodes': [4],
-        'rate': [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000],
+        'nodes': [7],
+        'rate': [15000, 120000, 160000],
         'tx_size': 256,
         'faults': 0, 
-        'duration': 30,
-        'runs': 2,
+        'duration': 100,
+        'runs': 1,
     }
     node_params = {
         'consensus': {
-            'timeout_delay': 10_000,
+            'timeout_delay': 3000,
             'sync_retry_delay': 100_000,
             'max_payload_size': 1_000,
-            'min_block_delay': 100,
+            'min_block_delay': 25,
             'network_delay': 20_000, # message delay on the leaders' proposals during DDoS
-            'ddos': False, # True for DDoS attack on the leader, False otherwise
-            'exp': 5 # multiplicative factor for exponential fallback
+            'ddos': True, # True for DDoS attack on the leader, False otherwise
+            'exp': 1, # multiplicative factor for exponential fallback
+            'unstable_ddos': False,
+            'unstable_delay': 500,
         },
         'mempool': {
             'queue_capacity': 100_000,
             'sync_retry_delay': 100_000,
             'max_payload_size': 256_000,
-            'min_block_delay': 100
+            'min_block_delay': 25
         },
         'protocol': 1, # 0 for 2-chain HotStuff, 1 for Ditto, 2 for 2-chain VABA
     }

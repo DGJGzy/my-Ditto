@@ -80,6 +80,26 @@ class PathMaker:
     def plot_file(name, ext):
         return join(PathMaker.plots_path(), f'{name}.{ext}')
 
+    # # 新增：时间戳相关方法
+    # @staticmethod
+    # def remote_logs_archive():
+    #     """远端日志归档根目录"""
+    #     return '/tmp/narwhal_benchmark_logs'
+    
+    # @staticmethod
+    # def run_logs_path(run_number):
+    #     """运行专用的日志子目录"""
+    #     return join('logs', f'run_{run_number}')
+    
+    # @staticmethod
+    # def run_node_log_file(run_number, i):
+    #     assert isinstance(i, int) and i >= 0
+    #     return join(PathMaker.run_logs_path(run_number), f'node-{i}.log')
+    
+    # @staticmethod
+    # def run_client_log_file(run_number, i):
+    #     assert isinstance(i, int) and i >= 0
+    #     return join(PathMaker.run_logs_path(run_number), f'client-{i}.log')
 
 class Color:
     HEADER = '\033[95m'

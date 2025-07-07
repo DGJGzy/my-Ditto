@@ -30,6 +30,8 @@ pub struct Parameters {
     pub min_block_delay: u64,
     pub ddos: bool,
     pub exp: u64,
+    pub unstable_ddos: bool,
+    pub unstable_delay: u64,
 }
 
 impl Default for Parameters {
@@ -42,6 +44,8 @@ impl Default for Parameters {
             max_payload_size: 500,
             ddos: false,
             exp: 1,
+            unstable_ddos: false,
+            unstable_delay: 500,
         }
     }
 }
