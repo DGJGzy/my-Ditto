@@ -5,6 +5,7 @@ use bytes::Bytes;
 use futures::stream::futures_unordered::FuturesUnordered;
 use futures::stream::StreamExt as _;
 use network::NetMessage;
+use rand::Rng;
 use std::net::SocketAddr;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::time::{sleep, Duration};
@@ -49,8 +50,12 @@ impl Filter {
             if parameters.ddos && block.fallback == 0 {
                 sleep(Duration::from_millis(parameters.network_delay)).await;
             }
-            if parameters.unstable_ddos && block.author != leader_elector.get_leader(1) {
+            if parameters.unstable_ddos && block.author != leader_elector.get_leader(1) && parameters.unstable_delay > 0 {
                 sleep(Duration::from_millis(parameters.unstable_delay)).await;
+            } 
+            if parameters.unstable_ddos && parameters.unstable_delay == 0 {
+                let delay_ms = 500 + rand::thread_rng().gen::<u64>() % 500;
+                sleep(Duration::from_millis(delay_ms)).await;
             }
         }
         input
