@@ -1,6 +1,6 @@
 {
     "key": {
-        "name": "DGJG1",
+        "name": "DGJG",
         "path": "/Users/dgjg/.ssh/aws"
     },
     "ports": {
@@ -11,7 +11,7 @@
     "repo": {
         "name": "my-Ditto",
         "url": "https://github.com/DGJGzy/my-Ditto.git",
-        "branch": "main"
+        "branch": "review1"
     },
     "instances": {
         "type": "m5d.xlarge",
