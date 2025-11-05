@@ -103,8 +103,8 @@ def install(ctx):
 def remote(ctx):
     ''' Run benchmarks on AWS '''
     bench_params = {
-        'nodes': [7],
-        'rate': [15000, 25000],
+        'nodes': [28],
+        'rate': [5000, 6000, 7000],
         'tx_size': 256,
         'faults': 0, 
         'duration': 100,
@@ -126,7 +126,7 @@ def remote(ctx):
             'queue_capacity': 100_000,
             'sync_retry_delay': 100_000,
             'max_payload_size': 256_000,
-            'min_block_delay': 25
+            'min_block_delay': 50
         },
         'protocol': 1, # 0 for 2-chain HotStuff, 1 for Ditto, 2 for 2-chain VABA
     }
