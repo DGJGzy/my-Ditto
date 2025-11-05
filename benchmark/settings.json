@@ -1,7 +1,7 @@
 {
     "key": {
         "name": "DGJG",
-        "path": "/Users/dgjg/.ssh/aws"
+        "path": "/home/ubuntu/.ssh/aws"
     },
     "ports": {
         "consensus": 8000,
@@ -11,7 +11,7 @@
     "repo": {
         "name": "my-Ditto",
         "url": "https://github.com/DGJGzy/my-Ditto.git",
-        "branch": "review1"
+        "branch": "ec2"
     },
     "instances": {
         "type": "m5d.xlarge",
