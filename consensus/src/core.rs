@@ -26,7 +26,7 @@ pub type SeqNumber = u64; // For both round and view
 pub type HeightNumber = u8;  // height={1,2} in fallback chain, height=0 for sync block
 pub type Bool = u8;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ConsensusMessage {
     Propose(Block),
     Vote(Vote),

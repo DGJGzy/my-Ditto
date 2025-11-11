@@ -16,7 +16,7 @@ def local(ctx):
         'rate': 100000,
         'tx_size': 256,
         'faults': 0,
-        'duration': 10,
+        'duration': 150,
     }
     node_params = {
         'consensus': {
@@ -27,7 +27,7 @@ def local(ctx):
             'network_delay': 2000, # message delay on the leaders' proposals during DDoS
             'ddos': False, # True for DDoS attack on the leader, False otherwise
             'exp': 1, # multiplicative factor for exponential fallback
-            'unstable_ddos': True,
+            'unstable_ddos': False,
             'unstable_delay': 50,
         },
         'mempool': {
@@ -103,11 +103,11 @@ def install(ctx):
 def remote(ctx):
     ''' Run benchmarks on AWS '''
     bench_params = {
-        'nodes': [28],
-        'rate': [5000, 6000, 7000],
+        'nodes': [7],
+        'rate': [20000, 40000, 60000, 80000, 100000],
         'tx_size': 256,
         'faults': 0, 
-        'duration': 100,
+        'duration': 150,
         'runs': 1,
     }
     node_params = {
@@ -116,8 +116,8 @@ def remote(ctx):
             'sync_retry_delay': 100_000,
             'max_payload_size': 1_000,
             'min_block_delay': 100,
-            'network_delay': 20_000, # message delay on the leaders' proposals during DDoS
-            'ddos': True, # True for DDoS attack on the leader, False otherwise
+            'network_delay': 30_000, # message delay on the leaders' proposals during DDoS
+            'ddos': False, # True for DDoS attack on the leader, False otherwise
             'exp': 1, # multiplicative factor for exponential fallback
             'unstable_ddos': False,
             'unstable_delay': 500,

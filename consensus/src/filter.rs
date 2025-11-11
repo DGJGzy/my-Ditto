@@ -10,7 +10,7 @@ use std::net::SocketAddr;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::time::{sleep, Duration};
 
-pub type FilterInput = (ConsensusMessage, Vec<SocketAddr>);
+pub type FilterInput = (ConsensusMessage, Vec<SocketAddr>, bool);
 
 pub struct Filter;
 
@@ -34,7 +34,7 @@ impl Filter {
     }
 
     async fn transmit(input: FilterInput, network: &Sender<NetMessage>) {
-        let (message, addresses) = input;
+        let (message, addresses, _) = input;
         let bytes = bincode::serialize(&message).expect("Failed to serialize core message");
         let net_message = NetMessage(Bytes::from(bytes), addresses);
         if let Err(e) = network.send(net_message).await {
@@ -43,7 +43,7 @@ impl Filter {
     }
 
     async fn delay(input: FilterInput, parameters: Parameters, leader_elector: &LeaderElector) -> FilterInput {
-        let (message, _) = &input;
+        let (message, _, flag) = &input;
         if let ConsensusMessage::Propose(block) = message {
             // NOTE: Increase the delay here (you can use any value from the 'parameters').
             // Only add network delay for non-fallback block proposals
@@ -57,6 +57,9 @@ impl Filter {
                 let delay_ms = 500 + rand::thread_rng().gen::<u64>() % 500;
                 sleep(Duration::from_millis(delay_ms)).await;
             }
+        }
+        if *flag == true {
+            sleep(Duration::from_millis(parameters.network_delay)).await;
         }
         input
     }
